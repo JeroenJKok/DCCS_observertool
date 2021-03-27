@@ -1,54 +1,77 @@
 package uk.oczadly.karl.csgsi;
 
+import uk.oczadly.karl.csgsi.state.PhaseCountdownState;
 import uk.oczadly.karl.csgsi.state.PlayerState;
 import uk.oczadly.karl.csgsi.state.components.PlayerSteamID;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Short> death = new ArrayList<>();
-        ArrayList<Short> kills = new ArrayList<>();
-        AtomicReference<Integer> first = new AtomicReference<>(0);
+        HashMap<PlayerSteamID, Short> KillMap = new HashMap<>();
+        HashMap<PlayerSteamID, Short> DeathMap = new HashMap<>();
+        AtomicInteger first = new AtomicInteger(0);
+        AtomicBoolean round = new AtomicBoolean(false);
         // Create a new listener (using a lambda for this example)
         GSIListener listener = (state, context) -> {
             state.getAllPlayers().ifPresent(Player -> {
                 if(first.get() == 0){
+                    System.out.println("-----------------------ROUND 1-----------------------");
                     for (Map.Entry<PlayerSteamID, PlayerState> entry : Player.entrySet()) {
                         PlayerSteamID k = entry.getKey();
                         PlayerState v = entry.getValue();
-                        death.add(first.get(), Short.valueOf(v.getStatistics().getDeathCount()));
-                        kills.add(first.get(), Short.valueOf(v.getStatistics().getKillCount()));
-                        first.getAndSet(first.get() + 1);
+                        KillMap.put(k,v.getStatistics().getKillCount());
+                        DeathMap.put(k,v.getStatistics().getDeathCount());
+                        first.getAndIncrement();
                     }
                 }
-                int loop = 0;
-                for (Map.Entry<PlayerSteamID, PlayerState> entry : Player.entrySet()) {
-                    PlayerSteamID k = entry.getKey();
-                    PlayerState v = entry.getValue();
-                    short kill = v.getStatistics().getKillCount();
-                    if(kills.get(loop) != kill){
-                        int deathloop = 0;
-                        for (Map.Entry<PlayerSteamID, PlayerState> eentry : Player.entrySet()) {
-                            PlayerSteamID key = eentry.getKey();
-                            PlayerState value = eentry.getValue();
-
-                            if (death.get(deathloop) != value.getStatistics().getDeathCount()) {
-                                System.out.println(death.get(deathloop));
-                                System.out.println(value.getStatistics().getDeathCount());
-                                System.out.println(v.getName() + " killed " + value.getName());
+                for(Map.Entry<PlayerSteamID, Short> map : KillMap.entrySet()){
+                    PlayerSteamID key = map.getKey();
+                    Short value = map.getValue();
+                    if(Player.get(key).getStatistics().getKillCount() > value){
+                        KillMap.put(key,Player.get(key).getStatistics().getKillCount());
+                        for(Map.Entry<PlayerSteamID, Short> map2 : DeathMap.entrySet()){
+                            PlayerSteamID k = map2.getKey();
+                            Short v = map2.getValue();
+                            if(Player.get(k).getStatistics().getDeathCount() > v){
+                                DeathMap.put(k,Player.get(k).getStatistics().getDeathCount());
+                                PhaseCountdownState phase = state.getPhaseCountdowns().get();
+                                int time = (int)Math.round(phase.getRemainingTime());
+                                int minutes = time/60;
+                                int seconds = time-minutes*60;
+                                String zero = "";
+                                if(minutes == 0 && seconds <= 7){
+                                    time = (int)Math.round(context.getPreviousState().getPhaseCountdowns().get().getRemainingTime());
+                                    minutes = time/60;
+                                    seconds = time-minutes*60;
+                                }
+                                if(String.valueOf(seconds).length() == 1){
+                                    zero = "0";
+                                }
+                                System.out.println("("+minutes+":"+zero+seconds+")"+Player.get(key).getName()+" Killed "+Player.get(k).getName());
                                 System.out.println("");
-                                death.set(deathloop, value.getStatistics().getDeathCount());
-                                kills.set(loop,kill);
+                                break;
                             }
                         }
                     }
-                    loop++;
-
+                }
+            });
+            state.getRound().ifPresent(Round ->{
+                if(Round.getPhase().getString().equals("over") && round.get()){
+                    int number = state.getMap().get().getRoundNumber()+1;
+                    System.out.println("");
+                    System.out.println(KillMap);
+                    System.out.println(DeathMap);
+                    System.out.println("-----------------------ROUND "+number+"-----------------------");
+                    round.set(false);
+                }
+                if(Round.getPhase().getString().equals("freezetime") && !round.get()){
+                    round.set(true);
                 }
             });
         };
