@@ -7,14 +7,18 @@ import uk.oczadly.karl.csgsi.state.components.PlayerSteamID;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Main {
-
+public class Main{
     public static void main(String[] args) {
         HashMap<PlayerSteamID, Short> KillMap = new HashMap<>();
         HashMap<PlayerSteamID, Short> DeathMap = new HashMap<>();
+        HashMap<Integer, String> eventMap = new HashMap<>();
+        final int[] gameTime = {0};
+        Timer timer = new Timer();
         AtomicInteger first = new AtomicInteger(0);
         AtomicBoolean round = new AtomicBoolean(false);
         // Create a new listener (using a lambda for this example)
@@ -53,8 +57,7 @@ public class Main {
                                 if(String.valueOf(seconds).length() == 1){
                                     zero = "0";
                                 }
-                                System.out.println("("+minutes+":"+zero+seconds+")"+Player.get(key).getName()+" Killed "+Player.get(k).getName());
-                                System.out.println("");
+                                eventMap.put(gameTime[0]+20,"("+minutes+":"+zero+seconds+")"+Player.get(key).getName()+" Killed "+Player.get(k).getName());
                                 break;
                             }
                         }
@@ -89,7 +92,21 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Could not start server.");
         }
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (eventMap.containsKey(gameTime[0])){
+                    System.out.println(eventMap.get(gameTime[0]));
+                    System.out.println("");
+                }
+                gameTime[0]++;
+            }
+        };
+        timer.scheduleAtFixedRate(task,1000,1000);
     }
 
 
 }
+
+
+

@@ -25,8 +25,6 @@
     <list default="true" id="ac32ce90-cb4e-4ddb-832d-96b206455b5f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/oczadly/karl/csgsi/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/oczadly/karl/csgsi/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/uk/oczadly/karl/csgsi/state/components/PlayerSteamID$Deserializer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/uk/oczadly/karl/csgsi/state/components/PlayerSteamID$Deserializer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/uk/oczadly/karl/csgsi/state/components/PlayerSteamID.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/uk/oczadly/karl/csgsi/state/components/PlayerSteamID.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,15 +71,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -129,6 +125,10 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state x="734" y="374" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1616853778768" />
+    <state x="1085" y="426" key="#com.intellij.ide.util.MemberChooser" timestamp="1617719721757">
+      <screen x="0" y="0" width="2560" height="1440" />
+    </state>
+    <state x="1085" y="426" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1617719721757" />
     <state width="2517" height="1281" key="GridCell.Tab.0.bottom" timestamp="1616863927670">
       <screen x="2560" y="0" width="2560" height="1440" />
     </state>
