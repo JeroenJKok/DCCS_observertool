@@ -25,6 +25,7 @@
     <list default="true" id="ac32ce90-cb4e-4ddb-832d-96b206455b5f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/oczadly/karl/csgsi/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/oczadly/karl/csgsi/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/uk/oczadly/karl/csgsi/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/uk/oczadly/karl/csgsi/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,25 +130,25 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state x="1085" y="426" key="#com.intellij.ide.util.MemberChooser/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1617719721757" />
-    <state width="2517" height="1281" key="GridCell.Tab.0.bottom" timestamp="1616863927670">
-      <screen x="2560" y="0" width="2560" height="1440" />
+    <state width="2517" height="334" key="GridCell.Tab.0.bottom" timestamp="1617722232215">
+      <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state width="2517" height="413" key="GridCell.Tab.0.bottom/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1616855062683" />
+    <state width="2517" height="334" key="GridCell.Tab.0.bottom/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1617722232215" />
     <state width="2517" height="1281" key="GridCell.Tab.0.bottom/0.0.2560.1440/2560.0.2560.1440@2560.0.2560.1440" timestamp="1616863927670" />
-    <state width="2517" height="1281" key="GridCell.Tab.0.center" timestamp="1616863927669">
-      <screen x="2560" y="0" width="2560" height="1440" />
+    <state width="2517" height="334" key="GridCell.Tab.0.center" timestamp="1617722232215">
+      <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state width="2517" height="413" key="GridCell.Tab.0.center/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1616855062683" />
+    <state width="2517" height="334" key="GridCell.Tab.0.center/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1617722232215" />
     <state width="2517" height="1281" key="GridCell.Tab.0.center/0.0.2560.1440/2560.0.2560.1440@2560.0.2560.1440" timestamp="1616863927669" />
-    <state width="2517" height="1281" key="GridCell.Tab.0.left" timestamp="1616863927668">
-      <screen x="2560" y="0" width="2560" height="1440" />
+    <state width="2517" height="334" key="GridCell.Tab.0.left" timestamp="1617722232215">
+      <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state width="2517" height="413" key="GridCell.Tab.0.left/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1616855062683" />
+    <state width="2517" height="334" key="GridCell.Tab.0.left/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1617722232215" />
     <state width="2517" height="1281" key="GridCell.Tab.0.left/0.0.2560.1440/2560.0.2560.1440@2560.0.2560.1440" timestamp="1616863927668" />
-    <state width="2517" height="1281" key="GridCell.Tab.0.right" timestamp="1616863927669">
-      <screen x="2560" y="0" width="2560" height="1440" />
+    <state width="2517" height="334" key="GridCell.Tab.0.right" timestamp="1617722232215">
+      <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state width="2517" height="413" key="GridCell.Tab.0.right/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1616855062683" />
+    <state width="2517" height="334" key="GridCell.Tab.0.right/0.0.2560.1440/2560.0.2560.1440@0.0.2560.1440" timestamp="1617722232215" />
     <state width="2517" height="1281" key="GridCell.Tab.0.right/0.0.2560.1440/2560.0.2560.1440@2560.0.2560.1440" timestamp="1616863927669" />
     <state x="810" y="374" key="Maven.ArtifactSearchDialog" timestamp="1616853854709">
       <screen x="0" y="0" width="2560" height="1440" />

@@ -5,6 +5,7 @@ import uk.oczadly.karl.csgsi.state.PlayerState;
 import uk.oczadly.karl.csgsi.state.components.PlayerSteamID;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -19,6 +20,7 @@ public class Main{
         HashMap<Integer, String> eventMap = new HashMap<>();
         final int[] gameTime = {0};
         Timer timer = new Timer();
+        System.out.println(LocalTime.now().toSecondOfDay());
         AtomicInteger first = new AtomicInteger(0);
         AtomicBoolean round = new AtomicBoolean(false);
         // Create a new listener (using a lambda for this example)
@@ -57,7 +59,8 @@ public class Main{
                                 if(String.valueOf(seconds).length() == 1){
                                     zero = "0";
                                 }
-                                eventMap.put(gameTime[0]+20,"("+minutes+":"+zero+seconds+")"+Player.get(key).getName()+" Killed "+Player.get(k).getName());
+                                eventMap.put(gameTime[0]+10,"("+minutes+":"+zero+seconds+")"+Player.get(key).getName()+" Killed "+Player.get(k).getName());
+                                System.out.println("("+minutes+":"+zero+seconds+")"+Player.get(key).getName()+" Killed "+Player.get(k).getName());
                                 break;
                             }
                         }
@@ -68,8 +71,6 @@ public class Main{
                 if(Round.getPhase().getString().equals("over") && round.get()){
                     int number = state.getMap().get().getRoundNumber()+1;
                     System.out.println("");
-                    System.out.println(KillMap);
-                    System.out.println(DeathMap);
                     System.out.println("-----------------------ROUND "+number+"-----------------------");
                     round.set(false);
                 }
@@ -92,17 +93,6 @@ public class Main{
         } catch (IOException e) {
             System.out.println("Could not start server.");
         }
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                if (eventMap.containsKey(gameTime[0])){
-                    System.out.println(eventMap.get(gameTime[0]));
-                    System.out.println("");
-                }
-                gameTime[0]++;
-            }
-        };
-        timer.scheduleAtFixedRate(task,1000,1000);
     }
 
 
