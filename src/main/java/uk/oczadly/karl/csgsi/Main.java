@@ -20,15 +20,16 @@ public class Main {
         HashMap<Integer, String> eventMap = new HashMap<>();
         final int[] gameTime = {0};
         Timer timer = new Timer();
-        int FUCKYOUdelay = 30;
+        int killDelay = 100;
+        final int[] roundNumber = {1};
         System.out.println(LocalTime.now().toSecondOfDay());
         AtomicInteger first = new AtomicInteger(0);
-        AtomicBoolean round = new AtomicBoolean(false);
+        final AtomicBoolean[] round = {new AtomicBoolean(false)};
         // Create a new listener (using a lambda for this example)
         GSIListener listener = (state, context) -> {
             state.getAllPlayers().ifPresent(Player -> {
                 if (first.get() == 0) {
-                    eventMap.put(gameTime[0]+FUCKYOUdelay,"-----------------------ROUND " + 1 + "-----------------------");
+                    eventMap.put(gameTime[0] + killDelay,"-----------------------ROUND " + roundNumber[0] + "-----------------------");
                     for (Map.Entry<PlayerSteamID, PlayerState> entry : Player.entrySet()) {
                         PlayerSteamID k = entry.getKey();
                         PlayerState v = entry.getValue();
@@ -60,11 +61,16 @@ public class Main {
                                 if (String.valueOf(seconds).length() == 1) {
                                     zero = "0";
                                 }
-                                int currtime = gameTime[0]+FUCKYOUdelay;
+                                int currtime = gameTime[0] + killDelay;
                                 if (eventMap.containsKey(currtime)){
                                     currtime++;
                                 }
-                                eventMap.put(currtime, "(" + minutes + ":" + zero + seconds + ")" + Player.get(key).getName() + " Killed " + Player.get(k).getName());
+                                eventMap.put(currtime,
+                                        "(" + minutes + ":" + zero + seconds + ")" +
+                                        "("+Player.get(key).getObserverSlot()+")" + Player.get(key).getName() +
+                                        " Killed " + "("+Player.get(k).getObserverSlot()+")" +  Player.get(k).getName() +
+                                        " With " + context.getPreviousState().getAllPlayers().get().get(key).getInventory().getActiveItem().getWeapon());
+                                System.out.println(eventMap.get(currtime));
                                 break;
                             }
                         }
@@ -72,13 +78,13 @@ public class Main {
                 }
             });
             state.getRound().ifPresent(Round -> {
-                if (Round.getPhase().getString().equals("over") && round.get()) {
-                    int number = state.getMap().get().getRoundNumber()+1;
-                    eventMap.put(gameTime[0]+FUCKYOUdelay,"-----------------------ROUND " + number + "-----------------------");
-                    round.set(false);
+                roundNumber[0] = state.getMap().get().getRoundNumber()+1;
+                if (Round.getPhase().getString().equals("over") && round[0].get()) {
+                    eventMap.put(gameTime[0]+killDelay+10,"-----------------------ROUND " + roundNumber[0] + "-----------------------");
+                    round[0].set(false);
                 }
-                if (Round.getPhase().getString().equals("freezetime") && !round.get()) {
-                    round.set(true);
+                if (Round.getPhase().getString().equals("freezetime") && !round[0].get()) {
+                    round[0].set(true);
                 }
             });
         };
@@ -98,20 +104,17 @@ public class Main {
         }
 
 
-    TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            if (eventMap.containsKey(gameTime[0])) {
-                System.out.println(eventMap.get(gameTime[0]));
-                System.out.println("");
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (eventMap.containsKey(gameTime[0])) {
+                    System.out.println(eventMap.get(gameTime[0]));
+
+                }
+                gameTime[0]++;
             }
-            gameTime[0]++;
-        }
-    };
+        };
         timer.scheduleAtFixedRate(task,1000,1000);
-}
+    }
 
 }
-
-
-
