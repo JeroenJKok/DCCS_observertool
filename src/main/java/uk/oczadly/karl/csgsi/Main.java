@@ -2,7 +2,9 @@ package uk.oczadly.karl.csgsi;
 
 import uk.oczadly.karl.csgsi.state.PhaseCountdownState;
 import uk.oczadly.karl.csgsi.state.PlayerState;
+import uk.oczadly.karl.csgsi.state.components.EnumValue;
 import uk.oczadly.karl.csgsi.state.components.PlayerSteamID;
+import uk.oczadly.karl.csgsi.state.components.Team;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -21,6 +23,7 @@ public class Main {
         final int[] gameTime = {0};
         Timer timer = new Timer();
         int killDelay = 100;
+        AtomicInteger killDif = new AtomicInteger();
         final int[] roundNumber = {1};
         System.out.println(LocalTime.now().toSecondOfDay());
         AtomicInteger first = new AtomicInteger(0);
@@ -41,40 +44,83 @@ public class Main {
                 for (Map.Entry<PlayerSteamID, Short> map : KillMap.entrySet()) {
                     PlayerSteamID key = map.getKey();
                     Short value = map.getValue();
-                    if (Player.get(key).getStatistics().getKillCount() > value) {
+                    if (Player.get(key).getStatistics().getKillCount() != value) {
+                        killDif.set(Player.get(key).getStatistics().getKillCount() - value);
+                        System.out.println(killDif.get());
                         KillMap.put(key, Player.get(key).getStatistics().getKillCount());
-                        for (Map.Entry<PlayerSteamID, Short> map2 : DeathMap.entrySet()) {
-                            PlayerSteamID k = map2.getKey();
-                            Short v = map2.getValue();
-                            if (Player.get(k).getStatistics().getDeathCount() > v) {
-                                DeathMap.put(k, Player.get(k).getStatistics().getDeathCount());
-                                PhaseCountdownState phase = state.getPhaseCountdowns().get();
-                                int time = (int) Math.round(phase.getRemainingTime());
-                                int minutes = time / 60;
-                                int seconds = time - minutes * 60;
-                                String zero = "";
-                                if (minutes == 0 && seconds <= 7) {
-                                    time = (int) Math.round(context.getPreviousState().getPhaseCountdowns().get().getRemainingTime());
-                                    minutes = time / 60;
-                                    seconds = time - minutes * 60;
+                        if (killDif.get() > 0){
+                            for (Map.Entry<PlayerSteamID, Short> map2 : DeathMap.entrySet()) {
+                                PlayerSteamID k = map2.getKey();
+                                Short v = map2.getValue();
+                                if (Player.get(k).getStatistics().getDeathCount() > v) {
+                                    DeathMap.put(k, Player.get(k).getStatistics().getDeathCount());
+                                    PhaseCountdownState phase = state.getPhaseCountdowns().get();
+                                    int time = (int) Math.round(phase.getRemainingTime());
+                                    int minutes = time / 60;
+                                    int seconds = time - minutes * 60;
+                                    String zero = "";
+                                    if (minutes == 0 && seconds <= 7) {
+                                        time = (int) Math.round(context.getPreviousState().getPhaseCountdowns().get().getRemainingTime());
+                                        minutes = time / 60;
+                                        seconds = time - minutes * 60;
+                                    }
+                                    if (String.valueOf(seconds).length() == 1) {
+                                        zero = "0";
+                                    }
+                                    int currtime = gameTime[0] + killDelay;
+                                    if (eventMap.containsKey(currtime)) {
+                                        currtime++;
+                                    }
+                                    eventMap.put(currtime,
+                                            "(" + minutes + ":" + zero + seconds + ")" +
+                                                    "(" + Player.get(key).getObserverSlot() + ")" + Player.get(key).getName() +
+                                                    " Killed " + "(" + Player.get(k).getObserverSlot() + ")" + Player.get(k).getName() +
+                                                    " With " + context.getPreviousState().getAllPlayers().get().get(key).getInventory().getActiveItem().getWeapon());
+                                    System.out.println(eventMap.get(currtime));
+                                    killDif.set(killDif.get() - 1);
+                                    if (killDif.get() < 0) {
+                                        break;
+                                    }
                                 }
-                                if (String.valueOf(seconds).length() == 1) {
-                                    zero = "0";
+                            }
+                        } else{
+                            KillMap.put(key, Player.get(key).getStatistics().getKillCount());
+                            for (Map.Entry<PlayerSteamID, Short> map2 : DeathMap.entrySet()) {
+                                PlayerSteamID tkKey = map2.getKey();
+                                Short tkValue = map2.getValue();
+                                    if (Player.get(tkKey).getStatistics().getDeathCount() > tkValue){
+                                        DeathMap.put(tkKey, Player.get(tkKey).getStatistics().getDeathCount());
+                                        PhaseCountdownState phase = state.getPhaseCountdowns().get();
+                                        int time = (int) Math.round(phase.getRemainingTime());
+                                        int minutes = time / 60;
+                                        int seconds = time - minutes * 60;
+                                        String zero = "";
+                                        if (minutes == 0 && seconds <= 7) {
+                                            time = (int) Math.round(context.getPreviousState().getPhaseCountdowns().get().getRemainingTime());
+                                            minutes = time / 60;
+                                            seconds = time - minutes * 60;
+                                        }
+                                        if (String.valueOf(seconds).length() == 1) {
+                                            zero = "0";
+                                        }
+                                        int currtime = gameTime[0] + killDelay;
+                                        if (eventMap.containsKey(currtime)) {
+                                            currtime++;
+                                        }
+                                        eventMap.put(currtime,
+                                                "(" + minutes + ":" + zero + seconds + ")" +
+                                                        "(" + Player.get(key).getObserverSlot() + ")" + Player.get(key).getName() +
+                                                        " Killed " + "(" + Player.get(tkKey).getObserverSlot() + ")" + Player.get(tkKey).getName() +
+                                                        " With " + context.getPreviousState().getAllPlayers().get().get(key).getInventory().getActiveItem().getWeapon());
+                                        System.out.println(eventMap.get(currtime));
+                                    }
                                 }
-                                int currtime = gameTime[0] + killDelay;
-                                if (eventMap.containsKey(currtime)){
-                                    currtime++;
+                                if (killDif.get() < 0) {
+                                    break;
                                 }
-                                eventMap.put(currtime,
-                                        "(" + minutes + ":" + zero + seconds + ")" +
-                                        "("+Player.get(key).getObserverSlot()+")" + Player.get(key).getName() +
-                                        " Killed " + "("+Player.get(k).getObserverSlot()+")" +  Player.get(k).getName() +
-                                        " With " + context.getPreviousState().getAllPlayers().get().get(key).getInventory().getActiveItem().getWeapon());
-                                System.out.println(eventMap.get(currtime));
-                                break;
                             }
                         }
-                    }
+
                 }
             });
             state.getRound().ifPresent(Round -> {
@@ -114,7 +160,7 @@ public class Main {
                 gameTime[0]++;
             }
         };
-        timer.scheduleAtFixedRate(task,1000,1000);
+//        timer.scheduleAtFixedRate(task,1000,1000);
     }
 
 }
