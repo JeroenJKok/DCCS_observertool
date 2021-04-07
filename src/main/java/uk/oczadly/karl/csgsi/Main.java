@@ -78,7 +78,7 @@ public class Main {
                                                     " With " + context.getPreviousState().getAllPlayers().get().get(key).getInventory().getActiveItem().getWeapon());
                                     System.out.println(eventMap.get(currtime));
                                     killDif.set(killDif.get() - 1);
-                                    if (killDif.get() < 0) {
+                                    if (killDif.get() <= 0) {
                                         break;
                                     }
                                 }
@@ -115,7 +115,8 @@ public class Main {
                                         System.out.println(eventMap.get(currtime));
                                     }
                                 }
-                                if (killDif.get() < 0) {
+                                killDif.set(killDif.get()+1);
+                                if (killDif.get() >= 0) {
                                     break;
                                 }
                             }
@@ -160,7 +161,7 @@ public class Main {
                 gameTime[0]++;
             }
         };
-//        timer.scheduleAtFixedRate(task,1000,1000);
+        timer.scheduleAtFixedRate(task,1000,1000);
     }
 
 }
