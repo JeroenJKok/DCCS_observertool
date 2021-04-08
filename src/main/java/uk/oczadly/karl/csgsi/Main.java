@@ -22,10 +22,9 @@ public class Main {
         HashMap<Integer, String> eventMap = new HashMap<>();
         final int[] gameTime = {0};
         Timer timer = new Timer();
-        int killDelay = 100;
+        int killDelay = 1;
         AtomicInteger killDif = new AtomicInteger();
         final int[] roundNumber = {1};
-        System.out.println(LocalTime.now().toSecondOfDay());
         AtomicInteger first = new AtomicInteger(0);
         final AtomicBoolean[] round = {new AtomicBoolean(false)};
         // Create a new listener (using a lambda for this example)
@@ -46,7 +45,6 @@ public class Main {
                     Short value = map.getValue();
                     if (Player.get(key).getStatistics().getKillCount() != value) {
                         killDif.set(Player.get(key).getStatistics().getKillCount() - value);
-                        System.out.println(killDif.get());
                         KillMap.put(key, Player.get(key).getStatistics().getKillCount());
                         if (killDif.get() > 0){
                             for (Map.Entry<PlayerSteamID, Short> map2 : DeathMap.entrySet()) {
@@ -76,7 +74,6 @@ public class Main {
                                                     "(" + Player.get(key).getObserverSlot() + ")" + Player.get(key).getName() +
                                                     " Killed " + "(" + Player.get(k).getObserverSlot() + ")" + Player.get(k).getName() +
                                                     " With " + context.getPreviousState().getAllPlayers().get().get(key).getInventory().getActiveItem().getWeapon());
-                                    System.out.println(eventMap.get(currtime));
                                     killDif.set(killDif.get() - 1);
                                     if (killDif.get() <= 0) {
                                         break;
